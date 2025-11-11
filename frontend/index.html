@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICU Mask Detection System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>ICU Mask Detection System</h1>
+    <p class="subtitle">Monitoring mask usage in ICU environments</p>
+  </header>
+
+  <main>
+    <section class="controls">
+      <button id="startCamera">Start Camera</button>
+      <button id="stopCamera">Stop Camera</button>
+      <button id="uploadImage">Upload Image</button>
+      <button id="detectMask">Detect Mask</button> <!-- 👈 new button -->
+      <input type="file" id="fileInput" accept="image/*" hidden>
+    </section>>
+
+    <section class="video-container">
+      <video id="video" autoplay muted></video>
+      <canvas id="canvas"></canvas>
+      <img id="uploadedImage" style="display:none; width:100%; height:100%; object-fit:cover;" />
+    </section>
+
+
+    <section class="summary">
+      <h2>Detection Summary</h2>
+      <ul id="summaryList">
+        <li>No detections yet</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 ICU Mask Detection Project</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ICU Mask Detection Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- ===================== SIDEBAR ===================== -->
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-circle">M</span>
+        <span class="logo-text">Mask Monitor</span>
+      </div>
+
+      <nav class="nav-links">
+        <a class="active" href="#">
+          <span class="material-icons-outlined">dashboard</span>
+          Dashboard
+        </a>
+        <p class="category">Monitoring</p>
+        <a href="#">
+          <span class="material-icons-outlined">videocam</span>
+          Live Feeds
+        </a>
+        <a href="#">
+          <span class="material-icons-outlined">description</span>
+          Reports
+        </a>
+        <p class="category">Support</p>
+        <a href="#">
+          <span class="material-icons-outlined">help_outline</span>
+          Docs
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>ICU Mask Detection</p>
+      </div>
+    </aside>
+
+    <!-- ===================== MAIN AREA ===================== -->
+    <div class="main">
+      <!-- Topbar -->
+      <header class="topbar">
+        <h1>Dashboard</h1>
+        <div class="top-actions">
+          <div class="search-box">
+            <span class="material-icons-outlined">search</span>
+            <input type="text" placeholder="Search..." />
+          </div>
+          <button class="icon-btn">
+            <span class="material-icons-outlined">notifications</span>
+          </button>
+          <button class="avatar-btn">ICU</button>
+        </div>
+      </header>
+
+      <!-- Stats Cards -->
+      <section class="cards-row">
+        <div class="card stat" id="card-with">
+          <p class="card-title">With Mask</p>
+          <h2 id="statWith">0</h2>
+          <p class="card-sub">Detected today</p>
+        </div>
+        <div class="card stat red" id="card-no">
+          <p class="card-title">No Mask</p>
+          <h2 id="statNo">0</h2>
+          <p class="card-sub">Requires attention</p>
+        </div>
+        <div class="card stat orange" id="card-incorrect">
+          <p class="card-title">Incorrect Mask</p>
+          <h2 id="statIncorrect">0</h2>
+          <p class="card-sub">Adjust PPE</p>
+        </div>
+        <div class="card stat blue" id="card-total">
+          <p class="card-title">Total Detections</p>
+          <h2 id="statTotal">0</h2>
+          <p class="card-sub">All sources</p>
+        </div>
+      </section>
+
+      <!-- Content Grid -->
+      <section class="content-grid">
+        <!-- LEFT COLUMN -->
+        <div class="left-col">
+          <!-- Unified Detection Box -->
+          <div class="card big">
+            <div class="card-header">
+              <h3>Mask Detection Input</h3>
+            </div>
+
+            <!-- Video / Image Input -->
+            <div class="video-wrapper">
+              <video id="video" autoplay muted></video>
+              <canvas id="canvas"></canvas>
+              <img id="uploadedImage" alt="preview" />
+            </div>
+
+            <!-- Camera Controls -->
+            <div class="btn-group">
+              <button id="startCamera" class="primary-btn">
+                <span class="material-icons-outlined">videocam</span> Start
+              </button>
+              <button id="stopCamera" class="ghost-btn">
+                <span class="material-icons-outlined">stop</span> Stop
+              </button>
+            </div>
+
+            <!-- Upload Button -->
+            <div class="upload-group">
+              <input type="file" id="fileInput" accept="image/*,video/*" hidden />
+              <button id="uploadImage" class="primary-btn full">
+                <span class="material-icons-outlined">upload</span>
+                Upload Image / Video
+              </button>
+            </div>
+
+            <p class="hint">
+              Use live camera or upload media to detect masks in real time.
+            </p>
+          </div>
+
+          <!-- Prediction Results -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Prediction Results</h3>
+            </div>
+            <ul id="summaryList" class="summary-list">
+              <li>No detections yet.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-col">
+          <!-- Log Panel -->
+          <div class="card">
+            <div class="card-header">
+              <h3>System Log</h3>
+            </div>
+            <div id="logPanel" class="log-panel">
+              <p>[System] Waiting for detections...</p>
+            </div>
+          </div>
+
+          <!-- Data Points -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Data Points</h3>
+            </div>
+            <ul class="data-list">
+              <li>✅ With Mask: <span id="maskCount">0</span></li>
+              <li>⚠️ Incorrect: <span id="incorrectCount">0</span></li>
+              <li>❌ No Mask: <span id="noMaskCount">0</span></li>
+              <li>🧍 Total Detected: <span id="totalCount">0</span></li>
+            </ul>
+          </div>
+
+          <!-- Manual Override -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Alert Control</h3>
+            </div>
+            <button id="muteAlert" class="mute-btn">
+              🔕 Mute Alert for 5 Minutes
+            </button>
+            <p class="hint">
+              Use this when staff are performing approved procedures without masks.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

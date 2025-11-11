@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ICU Smart Detection Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style_v3.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h2>🩺 ICU Monitor</h2>
+      <p class="role">Mask Detection System</p>
+    </div>
+    <nav class="nav">
+      <a class="active">Dashboard</a>
+      <a>Reports</a>
+      <a>Analytics</a>
+      <a>Logs</a>
+      <a>Settings</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <input type="text" placeholder="Search..." />
+      <div class="status-pills">
+        <span id="modelName" class="pill">Model: ...</span>
+        <span id="uptime" class="pill">Uptime: ...</span>
+      </div>
+      <button class="new-project">+ Add New Source</button>
+    </header>
+
+    <!-- Stats Row -->
+    <section class="stats">
+      <div class="stat-card green">
+        <h3>With Mask</h3>
+        <p id="statWith">0</p>
+      </div>
+      <div class="stat-card red">
+        <h3>No Mask</h3>
+        <p id="statNo">0</p>
+      </div>
+      <div class="stat-card orange">
+        <h3>Incorrect Mask</h3>
+        <p id="statIncorrect">0</p>
+      </div>
+      <div class="stat-card blue">
+        <h3>Total Detections</h3>
+        <p id="statTotal">0</p>
+      </div>
+    </section>
+
+    <!-- Detection Panels -->
+    <section class="detection-section">
+      <!-- Live / Image viewer -->
+      <div class="card main-detection">
+        <h2>🧠 Live / Uploaded View</h2>
+        <div class="video-container large">
+          <video id="video" autoplay muted></video>
+          <canvas id="canvas"></canvas>
+          <img id="uploadedImage" alt="preview" />
+        </div>
+        <div class="button-group">
+          <button id="startCamera">Start Camera</button>
+          <button id="stopCamera">Stop</button>
+        </div>
+      </div>
+
+      <!-- Upload -->
+      <div class="card sub-section">
+        <h2>📤 Upload Media</h2>
+        <input type="file" id="fileInput" accept="image/*,video/*" hidden />
+        <button id="uploadImage" class="wide-btn">Upload Image / Video</button>
+        <button id="detectMask" class="wide-btn">Run Detection</button>
+      </div>
+
+      <!-- Prediction Results -->
+      <div class="card sub-section">
+        <h2>📋 Prediction Results</h2>
+        <ul id="summaryList" class="summary-list">
+          <li>No detections yet.</li>
+        </ul>
+      </div>
+
+      <!-- System & Log -->
+      <div class="card sub-section">
+        <h2>🖥 System Log</h2>
+        <div id="logPanel" class="log-panel">
+          <p>[System] Waiting for detections...</p>
+        </div>
+        <div class="system-mini">
+          <p>CPU: <span id="cpuUsage">--</span></p>
+          <p>RAM: <span id="ramUsage">--</span></p>
+        </div>
+        <button id="exportCsv" class="wide-btn">⬇️ Export Detection History</button>
+        <button id="muteAlert" class="mute-btn">🔕 Mute Alert (5 min)</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
