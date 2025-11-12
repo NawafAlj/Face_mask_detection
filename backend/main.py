@@ -196,3 +196,18 @@ def serve_dashboard():
 
 
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
+
+# Path to static folder
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+
+# Mount static directory
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+# Serve main dashboard HTML
+@app.get("/")
+async def serve_dashboard():
+    html_path = os.path.join(static_dir, "dashboard.html")
+    return FileResponse(html_path)
