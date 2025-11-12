@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from ultralytics import YOLO
 import numpy as np
 import cv2
@@ -39,15 +40,6 @@ print(f"✅ Model loaded successfully from: {MODEL_PATH}")
 start_time = time.time()
 detection_log = []  # store history of detections
 mute_state = {"active": False, "until": None}
-
-
-# ---------------------------------------------------------
-# ✅ Root endpoint
-# ---------------------------------------------------------
-@app.get("/")
-def home():
-    return {"message": "ICU Mask Detection API is running!"}
-
 
 # ---------------------------------------------------------
 # ✅ Mask detection endpoint
@@ -95,7 +87,6 @@ async def detect_mask(file: UploadFile = File(...)):
         print("❌ Detection error:", e)
         return JSONResponse({"error": "Detection failed"}, status_code=500)
 
-
 # ---------------------------------------------------------
 # ✅ System status endpoint
 # ---------------------------------------------------------
@@ -113,7 +104,6 @@ def get_status():
         "detections_logged": len(detection_log)
     }
 
-
 # ---------------------------------------------------------
 # ✅ Detection summary (for frontend stats)
 # ---------------------------------------------------------
@@ -130,14 +120,12 @@ def get_summary():
             summary["with_mask"] += 1
     return summary
 
-
 # ---------------------------------------------------------
 # ✅ Detection log list (for UI history)
 # ---------------------------------------------------------
 @app.get("/detections/log")
 def get_log():
     return {"count": len(detection_log), "logs": detection_log[-20:]}  # last 20 entries
-
 
 # ---------------------------------------------------------
 # ✅ Export detections to CSV
@@ -155,7 +143,6 @@ def export_log():
 
     return FileResponse(csv_path, filename="detection_log.csv")
 
-
 # ---------------------------------------------------------
 # ✅ Mute / Alert Control (Manual Override)
 # ---------------------------------------------------------
@@ -169,7 +156,6 @@ def mute_alert():
         "until": mute_state["until"].isoformat()
     }
 
-
 @app.get("/mute/status")
 def get_mute_status():
     if mute_state["active"] and datetime.now() > mute_state["until"]:
@@ -178,32 +164,12 @@ def get_mute_status():
         print("🔔 Alerts automatically re-enabled.")
     return mute_state
 
-
 # ---------------------------------------------------------
 # ✅ Serve Frontend (HTML, CSS, JS)
 # ---------------------------------------------------------
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-
 static_dir = os.path.join(os.path.dirname(__file__), "static")
 
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
-
-@app.get("/")
-def serve_dashboard():
-    html_path = os.path.join(static_dir, "dashboard.html")
-    return FileResponse(html_path)
-
-
-
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-import os
-
-# Path to static folder
-static_dir = os.path.join(os.path.dirname(__file__), "static")
-
-# Mount static directory
+# Mount static directory for CSS, JS, etc.
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # Serve main dashboard HTML
