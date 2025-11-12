@@ -1,11 +1,13 @@
 // ========================
-// CONFIG
+// CONFIG (Auto-detect backend URL)
 // ========================
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = window.location.origin;  // Works both locally & on Render
 const DETECT_URL = `${API_BASE_URL}/detect/`;
 const STATUS_URL = `${API_BASE_URL}/status`;
 const SUMMARY_URL = `${API_BASE_URL}/summary`;
 const EXPORT_URL = `${API_BASE_URL}/export`;
+
+console.log("✅ Using API base URL:", API_BASE_URL);
 
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
