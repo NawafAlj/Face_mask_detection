@@ -177,3 +177,22 @@ def get_mute_status():
         mute_state["until"] = None
         print("🔔 Alerts automatically re-enabled.")
     return mute_state
+
+
+# ---------------------------------------------------------
+# ✅ Serve Frontend (HTML, CSS, JS)
+# ---------------------------------------------------------
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+@app.get("/")
+def serve_dashboard():
+    html_path = os.path.join(static_dir, "dashboard.html")
+    return FileResponse(html_path)
+
+
+
