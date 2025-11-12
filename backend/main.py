@@ -29,7 +29,7 @@ app.add_middleware(
 # ---------------------------------------------------------
 # ✅ Load YOLO model once at startup
 # ---------------------------------------------------------
-MODEL_PATH = "/home/nawaf/code/NawafKh-22/facegourd/backend/models/final_face_mask_best_sgd_v7.pt"
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "models", "final_face_mask_best_sgd_v7.pt")
 model = YOLO(MODEL_PATH)
 print(f"✅ Model loaded successfully from: {MODEL_PATH}")
 
