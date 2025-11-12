@@ -167,13 +167,18 @@ def get_mute_status():
 # ---------------------------------------------------------
 # ✅ Serve Frontend (HTML, CSS, JS)
 # ---------------------------------------------------------
-static_dir = os.path.join(os.path.dirname(__file__), "static")
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
-# Mount static directory for CSS, JS, etc.
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
+# ✅ Define absolute paths for Render & local compatibility
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 
-# Serve main dashboard HTML
+# ✅ Mount static directory for CSS, JS, images, etc.
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+# ✅ Serve main dashboard HTML
 @app.get("/")
 async def serve_dashboard():
-    html_path = os.path.join(static_dir, "dashboard.html")
+    html_path = os.path.join(STATIC_DIR, "dashboard.html")
     return FileResponse(html_path)
