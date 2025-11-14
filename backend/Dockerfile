@@ -1,28 +1,24 @@
-# ==========================================
-# 🐳 Dockerfile — FastAPI + YOLO (FaceGourd)
-# ==========================================
+FROM python:3.10-slim
 
-# ---- 1. Base Python image (lightweight Linux + Python) ----
-FROM python:3.12.9
-
-# ---- 2. Create working directory inside container ----
 WORKDIR /app
 
-# ---- 3. Copy ONLY requirements first (faster caching) ----
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
 
-# ---- 4. Install system dependencies + Python packages ----
-# libgl1 & libglib2.0-0 are required for OpenCV & Ultralytics
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgl1 libglib2.0-0 && \
-    pip install --no-cache-dir -r requirements.txt && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+# Install CPU-only PyTorch first (small!)
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir torch==2.2.2+cpu torchvision==0.17.2+cpu \
+        -f https://download.pytorch.org/whl/cpu/torch_stable.html
 
-# ---- 5. Copy the backend code into the container ----
+# Install the rest
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
 
-# ---- 6. Expose FastAPI port for Cloud Run ----
 EXPOSE 8080
 
-# ---- 7. Start FastAPI with Uvicorn ----
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]

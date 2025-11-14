@@ -1,5 +1,0 @@
-timestamp,label,confidence
-2025-11-12 10:37:44,mask_weared_incorrect,0.84
-2025-11-12 10:37:44,mask_weared_incorrect,0.83
-2025-11-12 10:37:44,without_mask,0.81
-2025-11-12 10:37:59,with_mask,0.85
